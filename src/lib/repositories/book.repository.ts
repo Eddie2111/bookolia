@@ -1,40 +1,80 @@
+"use server";
 import { prisma } from "@/lib/prisma";
 
-// ✅ Create a book
 export async function createBook(data: {
+  id: string;
   title: string;
   author: string;
+  description: string;
   rating?: number;
   userId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }) {
   try {
-    // Validate input data
+
     if (!data.title || !data.author || !data.userId) {
       throw new Error("Title, author, and userId are required.");
     }
 
-    // Ensure rating is within valid range (0-5)
+
     if (data.rating !== undefined && (data.rating < 0 || data.rating > 5)) {
       throw new Error("Rating must be between 0 and 5.");
     }
 
-    // Create the book
+
     return await prisma.book.create({
       data,
     });
   } catch (err) {
     const error = err as { code: string };
     console.error("Error creating book:", error);
-    throw error; // Re-throw the error for the caller to handle
+    throw error
   }
 }
 
-// ✅ Get all books (optionally filter by user, with pagination)
-export async function getBooks(userId?: string, page = 1, pageSize = 10) {
+export async function getAllBooks(page = 1, pageSize = 10) {
   try {
     const skip = (page - 1) * pageSize;
 
-    // Fetch books with pagination and optional filtering by userId
+    const [books, total] = await prisma.$transaction([
+      prisma.book.findMany({
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: pageSize,
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          author: true,
+          rating: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      prisma.book.count(),
+    ]);
+
+    return {
+      books,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
+  } catch (err) {
+    const error = err as { code: string };
+    console.error("Error fetching books:", error);
+    throw error;
+  }
+};
+
+export async function getBooksByUserId(userId: string, page = 1, pageSize = 10) {
+  if(!userId) throw new Error("User ID is required.");
+  try {
+    const skip = (page - 1) * pageSize;
+
+
     const [books, total] = await prisma.$transaction([
       prisma.book.findMany({
         where: userId ? { userId } : undefined,
@@ -46,6 +86,7 @@ export async function getBooks(userId?: string, page = 1, pageSize = 10) {
           title: true,
           author: true,
           rating: true,
+          description: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -67,15 +108,14 @@ export async function getBooks(userId?: string, page = 1, pageSize = 10) {
   }
 }
 
-// ✅ Get a single book by ID
 export async function getBookById(id: string) {
   try {
-    // Validate input
+
     if (!id) {
-      throw new Error("Book ID is required.");
+      console.log("Book ID is required.");
+      return null;
     }
 
-    // Fetch the book
     const book = await prisma.book.findUnique({
       where: { id },
       select: {
@@ -83,13 +123,15 @@ export async function getBookById(id: string) {
         title: true,
         author: true,
         rating: true,
+        description: true,
         createdAt: true,
         updatedAt: true,
       },
     });
 
     if (!book) {
-      throw new Error("Book not found.");
+      console.log("Book not found.");
+      return null;
     }
 
     return book;
@@ -100,23 +142,22 @@ export async function getBookById(id: string) {
   }
 }
 
-// ✅ Update a book
 export async function updateBook(
   id: string,
-  data: { title?: string; author?: string; rating?: number },
+  data: { title?: string; author?: string; rating?: number; description: string; },
 ) {
   try {
-    // Validate input
+
     if (!id) {
       throw new Error("Book ID is required.");
     }
 
-    // Ensure rating is within valid range (0-5)
+
     if (data.rating !== undefined && (data.rating < 0 || data.rating > 5)) {
       throw new Error("Rating must be between 0 and 5.");
     }
 
-    // Update the book
+
     const updatedBook = await prisma.book.update({
       where: { id },
       data,
@@ -133,16 +174,13 @@ export async function updateBook(
   }
 }
 
-// ✅ Delete a book
-export async function deleteBook(id: string) {
+export async function deleteBook(id: string): Promise<boolean> {
   try {
-    // Validate input
     if (!id) {
       throw new Error("Book ID is required.");
     }
-
-    // Delete the book
     await prisma.book.delete({ where: { id } });
+    return true;
   } catch (err) {
     const error = err as { code: string };
     if (error.code === "P2025") {
@@ -150,5 +188,63 @@ export async function deleteBook(id: string) {
     }
     console.error("Error deleting book:", error);
     throw error;
+  }
+}
+
+
+export async function getBooksBySearch(query: string, page = 1, pageSize = 10) {
+  try {
+    const skip = (page - 1) * pageSize;
+    const searchQuery = query?.trim() || ""; 
+
+    const [books, total] = await prisma.$transaction([
+      prisma.book.findMany({
+        where: {
+          OR: [
+            { title: { contains: searchQuery, mode: "insensitive" } }, 
+            { author: { contains: searchQuery, mode: "insensitive" } }, 
+          ],
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: pageSize,
+        select: {
+          id: true,
+          title: true,
+          author: true,
+          rating: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      prisma.book.count({
+        where: {
+          OR: [
+            { title: { contains: searchQuery, mode: "insensitive" } },
+            { author: { contains: searchQuery, mode: "insensitive" } },
+          ],
+        },
+      }),
+    ]);
+    if (!searchQuery) {
+      return {
+        books: [],
+        total: 0,
+        page,
+        pageSize,
+        totalPages: 0,
+      };
+    }
+    return {
+      books,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
+  } catch (err) {
+    console.error("Error fetching books by search:", err);
+    return null;
   }
 }

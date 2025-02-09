@@ -50,17 +50,18 @@ export default function Navbar() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='w-56' align='end' forceMount>
-                  <DropdownMenuItem className='flex flex-col gap-1 font-semibold'>
-                    <p className='text-left'>Hello {session?.user?.name}</p>
-                    <span>[ {session?.user?.email} ]</span>
+                  <DropdownMenuItem className='flex flex-col gap-1 font-semibold text-left'>
+                    <p>Hello {session?.user?.name}</p>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <User className='mr-2 w-4 h-4' />
                     <span>Profile</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
+                    <Link href='/my-books' className="flex flex-row justify-between gap-2">
                     <BookOpen className='mr-2 w-4 h-4' />
                     <span>My Books</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={toggleLogout}>
