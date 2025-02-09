@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@/lib/prisma";
 
 // ✅ Create or update a user
