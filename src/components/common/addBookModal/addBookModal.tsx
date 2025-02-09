@@ -54,7 +54,7 @@ export default function AddBookModal({
         <DialogHeader>
           <DialogTitle>Add a New Book</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="my-2">
           <div>
             <Label htmlFor="title" className="block mb-1 font-medium text-sm">
               Title

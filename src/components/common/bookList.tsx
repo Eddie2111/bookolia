@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllBooks } from "@/lib/repositories/book.repository";
 import Pagination from "@/components/common/pagination";
 import RichText from "./richText";
+import { LoadingSpinnerLayout } from "./loadingSpinner";
 
 export type TBook = {
   id: string;
@@ -44,7 +45,7 @@ export default function BookList({ initialPage = 1, pageSize = 10 }) {
     fetchBooks();
   }, [page, pageSize]);
 
-  if (loading) return <p className="text-white">Loading books...</p>;
+  if (loading) return <LoadingSpinnerLayout />;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (

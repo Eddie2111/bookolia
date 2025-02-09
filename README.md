@@ -1,9 +1,11 @@
 # Bookolia - Project Documentation
 
 ## Overview
+
 Bookolia is a platform that hosts book reviews, allowing users to explore and create book portfolios. The platform is built using Next.js App Router, Prisma, and PostgreSQL, with a modern UI powered by ShadCN components.
 
 ## Features
+
 - **User Authentication**: Users sign in using Google.
 - **Book Search**: Users can search for book portfolios.
 - **Portfolio Management**:
@@ -11,6 +13,7 @@ Bookolia is a platform that hosts book reviews, allowing users to explore and cr
   - Users can edit or delete portfolios they created.
 
 ## Tech Stack
+
 - **Frontend**: Next.js (App Router), TypeScript, React, TailwindCSS, shadcn components
 - **Backend**: Next.js Server Actions, Prisma ORM
 - **Database**: PostgreSQL
@@ -19,6 +22,7 @@ Bookolia is a platform that hosts book reviews, allowing users to explore and cr
 - **Form Handling**: React Hook Form with Zod validation
 
 ## Dependencies
+
 ```json
 "@hookform/resolvers": "^3.10.0",
 "@next-auth/prisma-adapter": "^1.0.7",
@@ -47,52 +51,66 @@ Bookolia is a platform that hosts book reviews, allowing users to explore and cr
 ## Setup Instructions
 
 ### 1. Clone the Repository
+
 ```sh
 git clone https://github.com/eddie2111/bookolia.git
 cd bookolia
 ```
 
 ### 2. Install Dependencies
+
 ```sh
 yarn install
 # or
 pnpm install
 ```
+
 - pnpm has been used initially
 
 ### 3. Set Up Environment Variables
+
 Create a `.env` file in the root directory and configure the following variables:
+
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/test2?sslmode=disable"
 AUTH_SECRET="YOUR_AUTH_SECRET=" # Added by `npx auth`. Read more: https://cli.authjs.dev
 GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID"
 GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
 ```
+
 A `.env.example` file is provided for reference.
 
 ### 4. Set Up Prisma
+
 ```sh
 npx prisma migrate dev --name init
 npx prisma generate
 ```
 
 ### 5. Run with Docker
+
 Ensure you have Docker installed, then build and start the container:
+
 ```sh
 docker-compose up --build
 ```
+
 This will start the application along with a PostgreSQL database.
 
 ### 6. Running the Development Server
+
 ```sh
 yarn dev
 # or
 pnpm run dev
 ```
+
 The app will be available at `http://localhost:3000`.
 
 ## License
+
 MIT License
 
 ## Contributors
+
 - Tareq Mahmood (@[Eddie2111](https://github.com/Eddie2111/bookolia))

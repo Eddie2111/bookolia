@@ -7,6 +7,7 @@ import { getBooksByUserId } from "@/lib/repositories/book.repository";
 import Pagination from "@/components/common/pagination";
 import RichText from "./richText";
 import { useSession } from "next-auth/react";
+import { LoadingSpinnerLayout } from "./loadingSpinner";
 
 export type TBook = {
   id: string;
@@ -50,7 +51,7 @@ export default function MyBookList({ initialPage = 1, pageSize = 10 }) {
     fetchBooks();
   }, [page, pageSize, session?.user?.id, session?.user]);
 
-  if (loading) return <p className="text-white">Loading books...</p>;
+  if (loading) return <LoadingSpinnerLayout />;
   if (error)
     return <p className="text-red-500">{error}, you are not logged in</p>;
 

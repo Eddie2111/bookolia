@@ -11,8 +11,10 @@ const LongText = ({
   const sanitizedText = DOMPurify.sanitize(longText);
 
   if (truncate && sanitizedText.length > 48) {
-    const plainText = sanitizedText.replace(/<\/?(p|a|br|ol|li)\b[^>]*>/g, "");
-
+    const plainText = sanitizedText.replace(
+      /<\/?(p|a|br|ol|ul|li|h[1-6]|strong|em|u|span|div)\b[^>]*>/gi,
+      "",
+    );
     return <div className="text-gray-400">{plainText.slice(0, 48)}...</div>;
   }
 
