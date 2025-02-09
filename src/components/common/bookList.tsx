@@ -8,15 +8,15 @@ import Pagination from "@/components/common/pagination";
 import RichText from "./richText";
 
 export type TBook = {
-    id: string;
-    title: string;
-    author: string;
-    description: string;
-    rating?: number;
-    userId?: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  rating?: number;
+  userId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export default function BookList({ initialPage = 1, pageSize = 10 }) {
   const [books, setBooks] = useState<TBook[]>([]);
@@ -31,9 +31,9 @@ export default function BookList({ initialPage = 1, pageSize = 10 }) {
       setError("");
       try {
         const { books, totalPages } = await getAllBooks(page, pageSize);
-        if(books) {
-            setBooks(books as TBook[]);
-            setTotalPages(totalPages);
+        if (books) {
+          setBooks(books as TBook[]);
+          setTotalPages(totalPages);
         }
       } catch (err) {
         console.log(err);
@@ -50,7 +50,7 @@ export default function BookList({ initialPage = 1, pageSize = 10 }) {
   return (
     <div>
       <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
-        {books.map((book) => (
+        {books.map(book => (
           <Link href={`/book/${book.id}`} key={book.id}>
             <Card className="flex flex-col bg-white/10 hover:bg-white/20 border-none h-full text-white transition-colors cursor-pointer">
               <CardHeader className="flex-grow">
@@ -66,7 +66,11 @@ export default function BookList({ initialPage = 1, pageSize = 10 }) {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Pagination currentPage={page} setCurrentPage={setPage} totalPages={totalPages} />
+        <Pagination
+          currentPage={page}
+          setCurrentPage={setPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

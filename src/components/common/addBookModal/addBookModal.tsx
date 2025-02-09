@@ -23,7 +23,12 @@ import { toast } from "sonner";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-export default function AddBookModal({ isOpen, setIsOpen, userId, onBookAdded }: IAddBookModalProps) {
+export default function AddBookModal({
+  isOpen,
+  setIsOpen,
+  userId,
+  onBookAdded,
+}: IAddBookModalProps) {
   const { control, handleSubmit, reset } = useForm<TAddBookFormType>({
     resolver: addBookFormSchemaResolver,
   });
@@ -111,16 +116,18 @@ export default function AddBookModal({ isOpen, setIsOpen, userId, onBookAdded }:
               name="rating"
               render={({ field }) => (
                 <div className="my-4">
-                <Slider
-                  id="rating"
-                  defaultValue={[0]}
-                  max={5}
-                  step={1}
-                  value={[field.value]}
-                  onValueChange={(value: number[]) => field.onChange(value[0])}
-                  className="w-full"
-                />
-                <span>⭐{field.value}</span>
+                  <Slider
+                    id="rating"
+                    defaultValue={[0]}
+                    max={5}
+                    step={1}
+                    value={[field.value]}
+                    onValueChange={(value: number[]) =>
+                      field.onChange(value[0])
+                    }
+                    className="w-full"
+                  />
+                  <span>⭐{field.value}</span>
                 </div>
               )}
             />

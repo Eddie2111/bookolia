@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
@@ -21,27 +21,26 @@ import { deleteBook } from "@/lib/repositories/book.repository";
 
 import "react-quill/dist/quill.snow.css";
 
-const DeleteModal = ({ id }: { id: string; } ) => {
+const DeleteModal = ({ id }: { id: string }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleDelete=async()=>{
+  const handleDelete = async () => {
     setIsLoading(true);
     const response = await deleteBook(id);
-    if(response){
+    if (response) {
       setIsLoading(false);
       setOpen(false);
       toast.success("Book deleted successfully");
-      router.push('/portfolio');
+      router.push("/portfolio");
     } else {
       setIsLoading(false);
       toast.error("Something went wrong, cannot delete book");
     }
-    
-  }
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
+  };
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="flex flex-row gap-3 text-red-500 cursor-pointer">
           <Trash className="mr-2 w-4 h-4" />
@@ -70,7 +69,7 @@ const DeleteModal = ({ id }: { id: string; } ) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-    )
-}
+  );
+};
 
 export default DeleteModal;

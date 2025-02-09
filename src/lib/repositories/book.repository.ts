@@ -12,16 +12,13 @@ export async function createBook(data: {
   updatedAt: Date;
 }) {
   try {
-
     if (!data.title || !data.author || !data.userId) {
       throw new Error("Title, author, and userId are required.");
     }
 
-
     if (data.rating !== undefined && (data.rating < 0 || data.rating > 5)) {
       throw new Error("Rating must be between 0 and 5.");
     }
-
 
     return await prisma.book.create({
       data,
@@ -29,7 +26,7 @@ export async function createBook(data: {
   } catch (err) {
     const error = err as { code: string };
     console.error("Error creating book:", error);
-    throw error
+    throw error;
   }
 }
 
@@ -67,13 +64,16 @@ export async function getAllBooks(page = 1, pageSize = 10) {
     console.error("Error fetching books:", error);
     throw error;
   }
-};
+}
 
-export async function getBooksByUserId(userId: string, page = 1, pageSize = 10) {
-  if(!userId) throw new Error("User ID is required.");
+export async function getBooksByUserId(
+  userId: string,
+  page = 1,
+  pageSize = 10,
+) {
+  if (!userId) throw new Error("User ID is required.");
   try {
     const skip = (page - 1) * pageSize;
-
 
     const [books, total] = await prisma.$transaction([
       prisma.book.findMany({
@@ -110,7 +110,6 @@ export async function getBooksByUserId(userId: string, page = 1, pageSize = 10) 
 
 export async function getBookById(id: string) {
   try {
-
     if (!id) {
       console.log("Book ID is required.");
       return null;
@@ -145,19 +144,21 @@ export async function getBookById(id: string) {
 
 export async function updateBook(
   id: string,
-  data: { title?: string; author?: string; rating?: number; description: string; },
+  data: {
+    title?: string;
+    author?: string;
+    rating?: number;
+    description: string;
+  },
 ) {
   try {
-
     if (!id) {
       throw new Error("Book ID is required.");
     }
 
-
     if (data.rating !== undefined && (data.rating < 0 || data.rating > 5)) {
       throw new Error("Rating must be between 0 and 5.");
     }
-
 
     const updatedBook = await prisma.book.update({
       where: { id },
@@ -192,18 +193,17 @@ export async function deleteBook(id: string): Promise<boolean> {
   }
 }
 
-
 export async function getBooksBySearch(query: string, page = 1, pageSize = 10) {
   try {
     const skip = (page - 1) * pageSize;
-    const searchQuery = query?.trim() || ""; 
+    const searchQuery = query?.trim() || "";
 
     const [books, total] = await prisma.$transaction([
       prisma.book.findMany({
         where: {
           OR: [
-            { title: { contains: searchQuery, mode: "insensitive" } }, 
-            { author: { contains: searchQuery, mode: "insensitive" } }, 
+            { title: { contains: searchQuery, mode: "insensitive" } },
+            { author: { contains: searchQuery, mode: "insensitive" } },
           ],
         },
         orderBy: { createdAt: "desc" },
