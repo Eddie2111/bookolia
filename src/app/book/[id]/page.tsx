@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBookById } from "@/lib/repositories/book.repository";
-import BookOptions from "./_component";
+import BookOptions from "./_components/bookOptions";
 
 import dynamic from "next/dynamic";
 
