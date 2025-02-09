@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bookolia - Project Documentation
 
-## Getting Started
+## Overview
+Bookolia is a platform that hosts book reviews, allowing users to explore and create book portfolios. The platform is built using Next.js App Router, Prisma, and PostgreSQL, with a modern UI powered by ShadCN components.
 
-First, run the development server:
+## Features
+- **User Authentication**: Users sign in using Google.
+- **Book Search**: Users can search for book portfolios.
+- **Portfolio Management**:
+  - Signed-up users can create book portfolios.
+  - Users can edit or delete portfolios they created.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+- **Frontend**: Next.js (App Router), TypeScript, React, TailwindCSS, shadcn components
+- **Backend**: Next.js Server Actions, Prisma ORM
+- **Database**: PostgreSQL
+- **Authentication**: NextAuth.js with Google OAuth
+- **Security**: Argon2 for password hashing, Dompurify for XSS protection
+- **Form Handling**: React Hook Form with Zod validation
+
+## Dependencies
+```json
+"@hookform/resolvers": "^3.10.0",
+"@next-auth/prisma-adapter": "^1.0.7",
+"@prisma/client": "^6.3.1",
+"argon2": "^0.41.1",
+"class-variance-authority": "^0.7.1",
+"clsx": "^2.1.1",
+"dompurify": "^3.2.4",
+"lucide-react": "^0.474.0",
+"next": "14.2.23",
+"next-auth": "5.0.0-beta.25",
+"next-themes": "^0.4.4",
+"prettier": "^3.4.2",
+"prisma": "^6.3.1",
+"react": "^18",
+"react-dom": "^18",
+"react-hook-form": "^7.54.2",
+"react-quill": "^2.0.0",
+"sonner": "^1.7.4",
+"tailwind-merge": "^3.0.1",
+"tailwindcss-animate": "^1.0.7",
+"uuid": "^11.0.5",
+"zod": "^3.24.1"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Clone the Repository
+```sh
+git clone https://github.com/eddie2111/bookolia.git
+cd bookolia
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Install Dependencies
+```sh
+yarn install
+# or
+pnpm install
+```
+- pnpm has been used initially
 
-## Learn More
+### 3. Set Up Environment Variables
+Create a `.env` file in the root directory and configure the following variables:
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/test2?sslmode=disable"
+AUTH_SECRET="YOUR_AUTH_SECRET=" # Added by `npx auth`. Read more: https://cli.authjs.dev
+GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
+```
+A `.env.example` file is provided for reference.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Set Up Prisma
+```sh
+npx prisma migrate dev --name init
+npx prisma generate
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Run with Docker
+Ensure you have Docker installed, then build and start the container:
+```sh
+docker-compose up --build
+```
+This will start the application along with a PostgreSQL database.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 6. Running the Development Server
+```sh
+yarn dev
+# or
+pnpm run dev
+```
+The app will be available at `http://localhost:3000`.
 
-## Deploy on Vercel
+## License
+MIT License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributors
+- Tareq Mahmood (@[Eddie2111](https://github.com/Eddie2111/bookolia))
