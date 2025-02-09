@@ -26,6 +26,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      
+      - name: Generate prisma client
+        run: pnpm dlx prisma generate
 
       - name: Run Prettier check
         run: pnpm format --check
