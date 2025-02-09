@@ -1,7 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 
-// ✅ Create or update a user
 export async function upsertUser(data: {
   id?: string;
   name?: string;
@@ -9,12 +8,9 @@ export async function upsertUser(data: {
   image?: string;
 }) {
   try {
-    // Validate input data
     if (!data.email) {
       throw new Error("Email is required.");
     }
-
-    // Upsert the user
     return await prisma.user.upsert({
       where: { email: data.email },
       update: {
@@ -35,7 +31,6 @@ export async function upsertUser(data: {
   }
 }
 
-// ✅ Get user by ID
 export async function getUserById(id: string) {
   try {
     if (!id) {
@@ -57,11 +52,10 @@ export async function getUserById(id: string) {
   } catch (err) {
     const error = err as { code: string };
     console.error("Error fetching user by ID:", error);
-    throw error;
+    return null;
   }
 }
 
-// ✅ Get user by email
 export async function getUserByEmail(email: string) {
   try {
     if (!email) {
@@ -83,26 +77,23 @@ export async function getUserByEmail(email: string) {
   } catch (err) {
     const error = err as { code: string };
     console.error("Error fetching user by email:", error);
-    throw error;
+    return null;
   }
 }
 
-// ✅ Delete user
 export async function deleteUser(id: string) {
   try {
-    // Validate input
     if (!id) {
       throw new Error("User ID is required.");
     }
-
-    // Delete the user
     await prisma.user.delete({ where: { id } });
   } catch (err) {
     const error = err as { code: string };
     if (error.code === "P2025") {
-      throw new Error("User not found.");
+      console.error("User not found.");
+      return null;
     }
     console.error("Error deleting user:", error);
-    throw error;
+    return null;
   }
 }

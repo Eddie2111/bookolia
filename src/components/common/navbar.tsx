@@ -54,10 +54,6 @@ export default function Navbar() {
                     <p>Hello {session?.user?.name}</p>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <User className='mr-2 w-4 h-4' />
-                    <span>Profile</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
                     <Link href='/my-books' className="flex flex-row justify-between gap-2">
                     <BookOpen className='mr-2 w-4 h-4' />
                     <span>My Books</span>

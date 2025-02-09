@@ -126,6 +126,7 @@ export async function getBookById(id: string) {
         description: true,
         createdAt: true,
         updatedAt: true,
+        userId: true,
       },
     });
 
