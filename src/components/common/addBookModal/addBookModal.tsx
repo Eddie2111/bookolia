@@ -151,7 +151,7 @@ export default function AddBookModal({ isOpen, setIsOpen, userId, onBookAdded }:
             type="submit"
             className="w-full bg-white text-purple-500 hover:bg-black hover:text-white"
           >
-            <PlusCircle className="mr-2 h-4 w-4" /> Add Book
+            <PlusCircle className="mr-2 h-4 w-4" /> Add New Book
           </Button>
         </form>
       </DialogContent>

@@ -126,6 +126,7 @@ export async function getBookById(id: string) {
         description: true,
         createdAt: true,
         updatedAt: true,
+        userId: true,
       },
     });
 
@@ -170,7 +171,7 @@ export async function updateBook(
       throw new Error("Book not found.");
     }
     console.error("Error updating book:", error);
-    throw error;
+    return null;
   }
 }
 

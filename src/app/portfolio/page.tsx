@@ -16,7 +16,7 @@ export default function Portfolio() {
   const [books, setBooks] = useState<TBook[]>([]);
   const currentPage = 1;
   const booksPerPage = 10;
-  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false)
+  const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
 
   const handleAddBook = (newBook: TBook) => {
     setBooks((prevBooks) => [newBook, ...prevBooks]);
@@ -35,7 +35,7 @@ export default function Portfolio() {
                 session?.user?.email ?
                 <Button onClick={() => setIsAddBookModalOpen(true)} className="bg-white hover:bg-gray-200 text-violet">
                   <PlusCircle className="mr-2 w-5 h-5" />
-                  Add Book
+                  Add New Book
                 </Button>
                 :
                 <Button disabled className="bg-gray-200 text-gray-500">

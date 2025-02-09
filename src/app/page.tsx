@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BookOpen, PlusCircle } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import { AddNewBooksHome } from "./_component";
 
 export default function Home() {
   return (
@@ -21,21 +22,11 @@ export default function Home() {
               View Portfolio
             </Link>
           </Button>
-          <Button
-            asChild
-            size='lg'
-            variant='outline'
-            className='border-white hover:bg-white/10 text-white'
-          >
-            <Link href='/upload'>
-              <PlusCircle className='mr-2 w-5 h-5' />
-              Add New Book
-            </Link>
-          </Button>
+          <AddNewBooksHome/>
         </div>
       </main>
       <footer className='mt-16 text-gray-400 text-sm'>
-        © 2023 BookFolio. All rights reserved.
+        © 2025 BookFolio. All rights reserved.
       </footer>
     </div>
   );
