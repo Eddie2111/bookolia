@@ -5,9 +5,15 @@ import BookOptions from "./_components/bookOptions";
 import { getUserById } from "@/lib/repositories/user.repository";
 import Link from "next/link";
 
-const LongText = dynamic(() => import("@/components/common/richText"), { ssr: false });
+const LongText = dynamic(() => import("@/components/common/richText"), {
+  ssr: false,
+});
 
-export default async function BookDetails({ params }: { params: { id: string } }) {
+export default async function BookDetails({
+  params,
+}: {
+  params: { id: string };
+}) {
   const book = await getBookById(params.id);
   if (!book) {
     return (
@@ -25,13 +31,17 @@ export default async function BookDetails({ params }: { params: { id: string } }
 
     return (
       <>
-        {Array(fullStars).fill("⭐").map((star, index) => (
-          <span key={`full-${index}`}>{star}</span>
-        ))}
+        {Array(fullStars)
+          .fill("⭐")
+          .map((star, index) => (
+            <span key={`full-${index}`}>{star}</span>
+          ))}
         {hasHalfStar && <span>⭐️</span>}
-        {Array(emptyStars).fill("☆").map((star, index) => (
-          <span key={`empty-${index}`}>{star}</span>
-        ))}
+        {Array(emptyStars)
+          .fill("☆")
+          .map((star, index) => (
+            <span key={`empty-${index}`}>{star}</span>
+          ))}
       </>
     );
   };
@@ -57,7 +67,10 @@ export default async function BookDetails({ params }: { params: { id: string } }
               This book was added by: {addByUserName?.name}
               <br />
               Click here to&nbsp;
-              <Link href={`mailto:${addByUserName?.email}`} className="underline hover:underline">
+              <Link
+                href={`mailto:${addByUserName?.email}`}
+                className="underline hover:underline"
+              >
                 Contact
               </Link>
             </p>

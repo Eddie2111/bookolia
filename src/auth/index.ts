@@ -17,8 +17,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, user }) {
       session.user.id = user.id;
       try {
-        await upsertUser({ id: user.id, email: user.email, name: user.name ?? "" });
-      } catch(err) {
+        await upsertUser({
+          id: user.id,
+          email: user.email,
+          name: user.name ?? "",
+        });
+      } catch (err) {
         console.error(err);
       }
       return session;

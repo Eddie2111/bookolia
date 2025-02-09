@@ -22,18 +22,26 @@ export const AddNewBooksHome = () => {
   const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
   const [books, setBooks] = useState<TBook[]>([]);
   const handleAddBook = (newBook: TBook) => {
-    setBooks((prevBooks) => [newBook, ...prevBooks]);
+    setBooks(prevBooks => [newBook, ...prevBooks]);
     console.log(books);
   };
 
   if (session?.user) {
     return (
       <>
-        <Button onClick={() => setIsAddBookModalOpen(true)} className="bg-white hover:bg-gray-200 text-violet">
+        <Button
+          onClick={() => setIsAddBookModalOpen(true)}
+          className="bg-white hover:bg-gray-200 text-violet"
+        >
           <PlusCircle className="mr-2 w-5 h-5" />
           Add New Book
         </Button>
-        <AddBookModal isOpen={isAddBookModalOpen} setIsOpen={setIsAddBookModalOpen} userId={session?.user?.id ?? "0"} onBookAdded={handleAddBook} />
+        <AddBookModal
+          isOpen={isAddBookModalOpen}
+          setIsOpen={setIsAddBookModalOpen}
+          userId={session?.user?.id ?? "0"}
+          onBookAdded={handleAddBook}
+        />
       </>
     );
   } else {

@@ -1,60 +1,69 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { getBooksBySearch } from "@/lib/repositories/book.repository"
-import { TBook } from "./bookList"
-import Link from "next/link"
-import { toast } from "sonner"
+import { useState } from "react";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { getBooksBySearch } from "@/lib/repositories/book.repository";
+import { TBook } from "./bookList";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function SearchBar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [searchResults, setSearchResults] = useState<TBook[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalResults, setTotalResults] = useState(0)
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<TBook[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
   const fetchBooks = async (query: string, pageNum = 1) => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     try {
-      const result = await getBooksBySearch(query, pageNum)
+      const result = await getBooksBySearch(query, pageNum);
       if (result) {
-        setSearchResults(result.books)
-        setTotalPages(result.totalPages)
-        setTotalResults(result.total)
-        setPage(pageNum)
+        setSearchResults(result.books);
+        setTotalPages(result.totalPages);
+        setTotalResults(result.total);
+        setPage(pageNum);
         toast.success(`Search returned ${result.total} books`);
       } else {
         setError("No books found.");
         toast.error("No books found.");
       }
     } catch (err) {
-      setError("Failed to fetch search results.")
-      console.error(err)
+      setError("Failed to fetch search results.");
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!searchQuery.trim()) return
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
 
     await fetchBooks(searchQuery, 1);
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white">
+        <Button
+          variant="outline"
+          className="bg-white/10 hover:bg-white/20 text-white"
+        >
           <Search className="mr-2 w-4 h-4" />
           Search Books
         </Button>
@@ -69,7 +78,7 @@ export default function SearchBar() {
               type="text"
               placeholder="Enter book title or author"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="border-gray-700 bg-gray-800 text-white"
             />
             <Button type="submit" disabled={loading}>
@@ -82,13 +91,16 @@ export default function SearchBar() {
 
         {searchResults.length > 0 && (
           <div className="mt-4">
-            <h3 className="mb-2 font-semibold text-lg">Results ({totalResults} found):</h3>
+            <h3 className="mb-2 font-semibold text-lg">
+              Results ({totalResults} found):
+            </h3>
             <ul className="space-y-2">
-              {searchResults.map((book) => (
+              {searchResults.map(book => (
                 <li key={book.id} className="text-md my-2">
-                    <Link href={`/book/${book.id}`}>
-                  <strong className="underline">{book.title}</strong> by {book.author}
-                    </Link>
+                  <Link href={`/book/${book.id}`}>
+                    <strong className="underline">{book.title}</strong> by{" "}
+                    {book.author}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -117,5 +129,5 @@ export default function SearchBar() {
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

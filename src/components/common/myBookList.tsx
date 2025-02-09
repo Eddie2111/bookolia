@@ -9,15 +9,15 @@ import RichText from "./richText";
 import { useSession } from "next-auth/react";
 
 export type TBook = {
-    id: string;
-    title: string;
-    author: string;
-    description: string;
-    rating?: number;
-    userId?: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  rating?: number;
+  userId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export default function MyBookList({ initialPage = 1, pageSize = 10 }) {
   const [books, setBooks] = useState<TBook[]>([]);
@@ -32,10 +32,14 @@ export default function MyBookList({ initialPage = 1, pageSize = 10 }) {
       setLoading(true);
       setError("");
       try {
-        const { books, totalPages } = await getBooksByUserId(session?.user?.id ?? "", page, pageSize);
-        if(books) {
-            setBooks(books as TBook[]);
-            setTotalPages(totalPages);
+        const { books, totalPages } = await getBooksByUserId(
+          session?.user?.id ?? "",
+          page,
+          pageSize,
+        );
+        if (books) {
+          setBooks(books as TBook[]);
+          setTotalPages(totalPages);
         }
       } catch (err) {
         console.log(err);
@@ -47,15 +51,20 @@ export default function MyBookList({ initialPage = 1, pageSize = 10 }) {
   }, [page, pageSize, session?.user?.id, session?.user]);
 
   if (loading) return <p className="text-white">Loading books...</p>;
-  if (error) return <p className="text-red-500">{error}, you are not logged in</p>;
+  if (error)
+    return <p className="text-red-500">{error}, you are not logged in</p>;
 
-  if(books.length<1){
-    return <p className="text-white">You have added no books, add one to make appear here</p>;
+  if (books.length < 1) {
+    return (
+      <p className="text-white">
+        You have added no books, add one to make appear here
+      </p>
+    );
   }
   return (
     <div>
       <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
-        {books.map((book) => (
+        {books.map(book => (
           <Link href={`/book/${book.id}`} key={book.id}>
             <Card className="flex flex-col bg-white/10 hover:bg-white/20 border-none h-full text-white transition-colors cursor-pointer">
               <CardHeader className="flex-grow">
@@ -71,7 +80,11 @@ export default function MyBookList({ initialPage = 1, pageSize = 10 }) {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Pagination currentPage={page} setCurrentPage={setPage} totalPages={totalPages} />
+        <Pagination
+          currentPage={page}
+          setCurrentPage={setPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );
