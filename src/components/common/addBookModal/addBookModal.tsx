@@ -54,7 +54,10 @@ export default function AddBookModal({
         <DialogHeader>
           <DialogTitle>Add a New Book</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="my-2 flex flex-col gap-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="my-2 flex flex-col gap-4"
+        >
           <div>
             <Label htmlFor="title" className="block mb-1 font-medium text-sm">
               Title
@@ -130,7 +133,8 @@ export default function AddBookModal({
                   <span>⭐{field.value}</span>
                   {fieldState.error && (
                     <span className="text-red-500 text-sm font-semibold">
-                      {fieldState.error.message}, Please use the slider to set rating
+                      {fieldState.error.message}, Please use the slider to set
+                      rating
                     </span>
                   )}
                 </div>
